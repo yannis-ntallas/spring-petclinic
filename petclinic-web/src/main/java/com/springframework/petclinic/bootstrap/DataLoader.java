@@ -10,6 +10,8 @@ import com.springframework.petclinic.services.VetService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 // Declare as component to create a spring bean.
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -29,6 +31,8 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        // Pet Types
+
         PetType dog = new PetType();
         dog.setName("Dog");
         PetType savedDogPetType = petTypeService.save(dog);
@@ -37,16 +41,37 @@ public class DataLoader implements CommandLineRunner {
         cat.setName("Cat");
         PetType savedCatPetType = petTypeService.save(cat);
 
+
         // Create some test owners.
         Owner owner1 = new Owner();
         owner1.setFirstName("Bob");
         owner1.setLastName("Smith");
+        owner1.setAddress("123 Test");
+        owner1.setCity("Athens");
+        owner1.setTelephone("123123123");
         ownerService.save(owner1);
+
+        Pet pet1 = new Pet();
+        pet1.setPetType(savedDogPetType);
+        pet1.setOwner(owner1);
+        pet1.setBirthday(LocalDate.now());
+        pet1.setName("Rosco");
+        owner1.getPets().add(pet1);
 
         Owner owner2 = new Owner();
         owner2.setFirstName("Kyle");
         owner2.setLastName("Weebo");
+        owner2.setAddress("789 Test");
+        owner2.setCity("Athens");
+        owner2.setTelephone("789789789");
         ownerService.save(owner2);
+
+        Pet pet2 = new Pet();
+        pet2.setPetType(savedCatPetType);
+        pet2.setOwner(owner2);
+        pet2.setBirthday(LocalDate.now());
+        pet2.setName("Just Cat");
+        owner2.getPets().add(pet2);
 
         System.out.println("Loaded owners...");
 
